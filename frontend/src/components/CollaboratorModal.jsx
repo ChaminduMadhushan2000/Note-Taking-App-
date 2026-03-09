@@ -14,21 +14,8 @@ export default function CollaboratorModal({ noteId, collaborators, onClose, onUp
     setLoading(true);
 
     try {
-      // Look up user by email first
-      const { data: users } = await API.get("/users", {
-        params: { email },
-      });
-
-      if (!users || users.length === 0) {
-        setError("No user found with that email.");
-        setLoading(false);
-        return;
-      }
-
-      const userId = users[0]._id;
-
-      const { data } = await API.patch(`/notes/${noteId}/collaborators`, {
-        userId,
+      const { data } = await API.put(`/notes/${noteId}/collaborators`, {
+        email,
       });
 
       onUpdate(data);

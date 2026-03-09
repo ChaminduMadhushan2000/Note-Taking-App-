@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Note = require("../models/Note");
+const User = require("../models/User");
 const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -148,7 +149,57 @@ router.get("/search", async (req, res) => {
   }
 });
 
-// PATCH /api/notes/:id/collaborators — Add a collaborator (owner only)
+// PUT /api/notes/:id/collaborators/email — Add a collaborator by email (owner only)
+router.put("/:id/collaborators", async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid note ID." });
+    }
+
+    const { email } = req.body;
+
+    if (!email || !email.trim()) {
+      return res.status(400).json({ message: "Email is required." });
+    }
+
+    const note = await Note.findById(req.params.id);
+
+    if (!note) {
+      return res.status(404).json({ message: "Note not found." });
+    }
+
+    if (note.owner.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Only the owner can manage collaborators." });
+    }
+
+    const userToAdd = await User.findOne({ email: email.toLowerCase().trim() });
+
+    if (!userToAdd) {
+      return res.status(404).json({ message: "No user found with that email." });
+    }
+
+    if (userToAdd._id.toString() === note.owner.toString()) {
+      return res.status(400).json({ message: "Owner cannot be added as a collaborator." });
+    }
+
+    if (note.collaborators.some((c) => c.toString() === userToAdd._id.toString())) {
+      return res.status(409).json({ message: "User is already a collaborator." });
+    }
+
+    note.collaborators.push(userToAdd._id);
+    await note.save();
+
+    const updated = await Note.findById(note._id)
+      .populate("owner", "name email")
+      .populate("collaborators", "name email");
+
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ message: "Server error.", error: err.message });
+  }
+});
+
+// PATCH /api/notes/:id/collaborators — Add a collaborator by userId (owner only)
 router.patch("/:id/collaborators", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
