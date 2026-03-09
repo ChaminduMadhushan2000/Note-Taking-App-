@@ -3,6 +3,7 @@ import { useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import NoteEditor from "./pages/NoteEditor";
 
 function App() {
   const { user, loading } = useAuth();
@@ -23,6 +24,10 @@ function App() {
         <Route
           path="/"
           element={user ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/notes/:id"
+          element={user ? <NoteEditor /> : <Navigate to="/login" />}
         />
       </Routes>
     </BrowserRouter>

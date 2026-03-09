@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+/* ── Quill iOS-style overrides ── */
+.note-editor .ql-toolbar.ql-snow {
+  border: none;
+  border-bottom: 1px solid #f3f4f6;
+  padding: 8px 0;
+  position: sticky;
+  top: 48px;            /* below the app header */
+  z-index: 10;
+  background: rgba(249, 250, 251, 0.85);
+  backdrop-filter: blur(12px);
+}
+
+.note-editor .ql-container.ql-snow {
+  border: none;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: #111827;
+}
+
+.note-editor .ql-editor {
+  padding: 16px 0;
+  min-height: 60vh;
+}
+
+.note-editor .ql-editor.ql-blank::before {
+  color: #d1d5db;
+  font-style: normal;
+}
