@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import API from "../utils/api";
+import CollaboratorModal from "../components/CollaboratorModal";
 
 const TOOLBAR_OPTIONS = [
   ["bold", "italic", "underline", "strike"],
@@ -20,7 +21,10 @@ export default function NoteEditor() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [collaborators, setCollaborators] = useState([]);
+  const [isOwner, setIsOwner] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showCollab, setShowCollab] = useState(false);
 
   useEffect(() => {
     if (!isNew) {
@@ -28,6 +32,9 @@ export default function NoteEditor() {
         .then(({ data }) => {
           setTitle(data.title);
           setContent(data.content);
+          setCollaborators(data.collaborators || []);
+          const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+          setIsOwner(data.owner?._id === storedUser.id);
         })
         .catch(() => navigate("/"));
     }
@@ -72,6 +79,16 @@ export default function NoteEditor() {
           >
             {saving ? "Saving…" : "Done"}
           </button>
+          {!isNew && isOwner && (
+            <button
+              onClick={() => setShowCollab(true)}
+              className="text-blue-500 font-semibold text-sm hover:text-blue-600 transition ml-4"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </button>
+          )
         </div>
       </header>
 
@@ -97,6 +114,16 @@ export default function NoteEditor() {
           />
         </div>
       </main>
+
+      {/* Collaborator Modal */}
+      {showCollab && (
+        <CollaboratorModal
+          noteId={id}
+          collaborators={collaborators}
+          onClose={() => setShowCollab(false)}
+          onUpdate={(updated) => setCollaborators(updated.collaborators || [])}
+        />
+      )}
     </div>
   );
 }
