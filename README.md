@@ -1,10 +1,10 @@
-# 📝 Collaborative Note-Taking App
+# Collaborative Note-Taking App
 
 A full-stack **MERN** (MongoDB, Express, React, Node.js) note-taking web app I built for my university project. It lets you create and edit rich-text notes, search through them instantly, and share notes with other users as collaborators. The frontend is styled with **Tailwind CSS** and bundled with **Vite** for a fast dev experience.
 
 ---
 
-## ✨ Features
+## Features
 
 - **JWT Authentication** – sign up and log in with hashed passwords (bcrypt) and Bearer token sessions
 - **Rich Text Editor** – write formatted notes using React Quill (bold, headings, lists, code blocks, etc.)
@@ -15,7 +15,7 @@ A full-stack **MERN** (MongoDB, Express, React, Node.js) note-taking web app I b
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer    | Technologies                                                    |
 | -------- | --------------------------------------------------------------- |
@@ -25,7 +25,7 @@ A full-stack **MERN** (MongoDB, Express, React, Node.js) note-taking web app I b
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Note-Taking-App-/
@@ -66,14 +66,14 @@ Note-Taking-App-/
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 - **Node.js** v18+
 - **MongoDB** – either a local instance or a free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 Create a file called `backend/.env` and add the following:
 
@@ -89,11 +89,11 @@ JWT_SECRET=replace_with_a_long_random_secret
 | `MONGO_URI`  | Your MongoDB connection string            |
 | `JWT_SECRET` | Secret key for signing & verifying tokens |
 
-> ⚠️ **Don't commit real credentials.** The `.gitignore` already excludes `.env` files.
+> **Don't commit real credentials.** The `.gitignore` already excludes `.env` files.
 
 ---
 
-## 🚀 Local Setup Instructions
+## Local Setup Instructions
 
 ### 1. Clone the repo
 
@@ -136,7 +136,7 @@ Then open **http://localhost:5173** in your browser and you're good to go!
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Auth – `/api/auth`
 
@@ -166,7 +166,3 @@ Then open **http://localhost:5173** in your browser and you're good to go!
 | GET    | `/?email=...` | look up a user by email |
 
 ---
-
-## 📄 License
-
-This project was built for educational purposes as part of a university assignment.
