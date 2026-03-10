@@ -49,6 +49,31 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET /api/notes/search — Full-text search on accessible notes
+router.get("/search", async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || !q.trim()) {
+      return res.status(400).json({ message: "Search query (q) is required." });
+    }
+
+    const userId = req.user.id;
+
+    const notes = await Note.find({
+      $text: { $search: q },
+      $or: [{ owner: userId }, { collaborators: userId }],
+    })
+      .populate("owner", "name email")
+      .populate("collaborators", "name email")
+      .sort({ score: { $meta: "textScore" } });
+
+    res.json(notes);
+  } catch (err) {
+    res.status(500).json({ message: "Server error.", error: err.message });
+  }
+});
+
 // GET /api/notes/:id — Read a single note (owner or collaborator only)
 router.get("/:id", async (req, res) => {
   try {
@@ -124,32 +149,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// GET /api/notes/search — Full-text search on accessible notes
-router.get("/search", async (req, res) => {
-  try {
-    const { q } = req.query;
-
-    if (!q || !q.trim()) {
-      return res.status(400).json({ message: "Search query (q) is required." });
-    }
-
-    const userId = req.user.id;
-
-    const notes = await Note.find({
-      $text: { $search: q },
-      $or: [{ owner: userId }, { collaborators: userId }],
-    })
-      .populate("owner", "name email")
-      .populate("collaborators", "name email")
-      .sort({ score: { $meta: "textScore" } });
-
-    res.json(notes);
-  } catch (err) {
-    res.status(500).json({ message: "Server error.", error: err.message });
-  }
-});
-
-// PUT /api/notes/:id/collaborators/email — Add a collaborator by email (owner only)
+// PUT /api/notes/:id/collaborators — Add a collaborator by email (owner only)
 router.put("/:id/collaborators", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
