@@ -20,7 +20,7 @@ export default function Dashboard() {
       const { data } = await API.get("/notes");
       setNotes(data);
     } catch {
-      /* silently fail — empty state will show */
+      // if this fails just show empty state, no big deal
     } finally {
       setLoading(false);
     }
@@ -40,7 +40,7 @@ export default function Dashboard() {
       });
       setNotes(data);
     } catch {
-      /* keep current list on error */
+      // just keep whatever notes are showing if search fails
     }
   };
 
@@ -49,7 +49,7 @@ export default function Dashboard() {
       await API.delete(`/notes/${id}`);
       setNotes((prev) => prev.filter((n) => n._id !== id));
     } catch {
-      /* ignore */
+      // not much we can do if delete fails
     }
   };
 
@@ -61,7 +61,7 @@ export default function Dashboard() {
     });
   };
 
-  // Strip HTML tags for preview
+  // strips html tags so we can show a plain text preview on the card
   const stripHtml = (html) => {
     const tmp = document.createElement("div");
     tmp.innerHTML = html;
@@ -70,10 +70,10 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Sticky Header */}
+      {/* top bar – sticks to the top when you scroll */}
       <header className="sticky top-0 z-10 bg-gray-50/80 backdrop-blur-lg">
         <div className="max-w-5xl mx-auto px-4 pt-6 pb-4">
-          {/* Top row */}
+          {/* title and sign out button */}
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-2xl font-bold text-gray-900">Notes</h1>
             <div className="flex items-center gap-3">
@@ -89,7 +89,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Search bar */}
+          {/* search bar */}
           <div className="relative">
             <svg
               className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
@@ -115,7 +115,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Content */}
+      {/* main content area */}
       <main className="max-w-5xl mx-auto px-4 pb-24">
         {loading ? (
           <div className="flex justify-center py-20">
@@ -140,17 +140,17 @@ export default function Dashboard() {
                 onClick={() => navigate(`/notes/${note._id}`)}
                 className="bg-white rounded-2xl shadow-sm p-5 cursor-pointer hover:shadow-md transition group"
               >
-                {/* Title */}
+                {/* note title */}
                 <h3 className="font-semibold text-gray-900 truncate">
                   {note.title}
                 </h3>
 
-                {/* Content preview */}
+                {/* short preview of the note content */}
                 <p className="text-sm text-gray-500 mt-1 line-clamp-3">
                   {stripHtml(note.content) || "No content"}
                 </p>
 
-                {/* Footer */}
+                {/* date and delete button */}
                 <div className="flex items-center justify-between mt-4">
                   <span className="text-xs text-gray-400">
                     {formatDate(note.updatedAt)}
@@ -169,7 +169,7 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                {/* Collaborator badge */}
+                {/* shows how many people are collaborating */}
                 {note.collaborators?.length > 0 && (
                   <div className="mt-3 flex items-center gap-1">
                     <svg
@@ -196,7 +196,7 @@ export default function Dashboard() {
         )}
       </main>
 
-      {/* Floating New Note button */}
+      {/* floating + button to create a new note */}
       <div className="fixed bottom-6 right-6">
         <button
           onClick={() => navigate("/notes/new")}

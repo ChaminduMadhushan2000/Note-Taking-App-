@@ -52,7 +52,7 @@ export default function NoteEditor() {
         await API.put(`/notes/${id}`, { title, content });
       }
     } catch {
-      /* save failed — stay on page */
+      // if save fails just stay on the page
     } finally {
       setSaving(false);
     }
@@ -60,7 +60,7 @@ export default function NoteEditor() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Sticky Header */}
+      {/* top bar with back, save, and collaborator buttons */}
       <header className="sticky top-0 z-20 bg-gray-50/80 backdrop-blur-lg border-b border-gray-200/60">
         <div className="max-w-3xl mx-auto px-4 h-12 flex items-center justify-between">
           <button
@@ -92,9 +92,9 @@ export default function NoteEditor() {
         </div>
       </header>
 
-      {/* Editor area */}
+      {/* editor area */}
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-6">
-        {/* Title */}
+        {/* note title input */}
         <input
           type="text"
           placeholder="Title"
@@ -103,7 +103,7 @@ export default function NoteEditor() {
           className="w-full text-2xl font-bold text-gray-900 placeholder-gray-300 outline-none bg-transparent mb-4 border-none"
         />
 
-        {/* Quill */}
+        {/* rich text editor (react quill) */}
         <div className="note-editor">
           <ReactQuill
             theme="snow"
@@ -115,7 +115,7 @@ export default function NoteEditor() {
         </div>
       </main>
 
-      {/* Collaborator Modal */}
+      {/* collaborator modal – only shows when you click the people icon */}
       {showCollab && (
         <CollaboratorModal
           noteId={id}

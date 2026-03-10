@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* ── Quill iOS-style overrides ── */
+/* custom styles to make the quill editor look cleaner */
 .note-editor .ql-toolbar.ql-snow {
   border: none;
   border-bottom: 1px solid #f3f4f6;

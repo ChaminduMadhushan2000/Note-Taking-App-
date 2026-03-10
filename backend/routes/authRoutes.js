@@ -5,7 +5,7 @@ const User = require("../models/User");
 
 const router = express.Router();
 
-// POST /api/auth/register
+// register a new user – hashes the password before saving
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -36,7 +36,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// POST /api/auth/login
+// login – checks credentials and returns a jwt token
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;

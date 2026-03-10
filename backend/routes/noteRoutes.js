@@ -6,10 +6,10 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// All routes require authentication
+// every note route needs the user to be logged in
 router.use(authMiddleware);
 
-// POST /api/notes — Create a note
+// create a new note
 router.post("/", async (req, res) => {
   try {
     const { title, content, collaborators } = req.body;
@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET /api/notes — List all notes the user owns or collaborates on
+// get all notes that belong to or are shared with the current user
 router.get("/", async (req, res) => {
   try {
     const userId = req.user.id;
@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET /api/notes/search — Full-text search on accessible notes
+// search notes by keyword – uses mongodb text index (has to be before /:id!)
 router.get("/search", async (req, res) => {
   try {
     const { q } = req.query;
@@ -74,7 +74,7 @@ router.get("/search", async (req, res) => {
   }
 });
 
-// GET /api/notes/:id — Read a single note (owner or collaborator only)
+// get a single note by id – only if you're the owner or a collaborator
 router.get("/:id", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -105,7 +105,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// PUT /api/notes/:id — Update a note (owner or collaborator only)
+// update a note's title/content – owner or collaborator can do this
 router.put("/:id", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -132,7 +132,7 @@ router.put("/:id", async (req, res) => {
 
     if (title !== undefined) note.title = title;
     if (content !== undefined) note.content = content;
-    // Only the owner can change the collaborators list
+    // only the owner should be able to change who's collaborating
     if (collaborators !== undefined && isOwner) {
       note.collaborators = collaborators;
     }
@@ -149,7 +149,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// PUT /api/notes/:id/collaborators — Add a collaborator by email (owner only)
+// add a collaborator using their email address – owner only
 router.put("/:id/collaborators", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -199,7 +199,7 @@ router.put("/:id/collaborators", async (req, res) => {
   }
 });
 
-// PATCH /api/notes/:id/collaborators — Add a collaborator by userId (owner only)
+// add a collaborator using their user id – owner only
 router.patch("/:id/collaborators", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -243,7 +243,7 @@ router.patch("/:id/collaborators", async (req, res) => {
   }
 });
 
-// DELETE /api/notes/:id/collaborators — Remove a collaborator (owner only)
+// remove a collaborator from a note – owner only
 router.delete("/:id/collaborators", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -285,7 +285,7 @@ router.delete("/:id/collaborators", async (req, res) => {
   }
 });
 
-// DELETE /api/notes/:id — Delete a note (owner only)
+// delete a note permanently – only the owner can do this
 router.delete("/:id", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {

@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-// GET /api/users?email=someone@example.com — look up users by email
+// find a user by their email – used when adding collaborators
 router.get("/", async (req, res) => {
   try {
     const { email } = req.query;

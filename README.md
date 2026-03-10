@@ -1,63 +1,63 @@
-# Collaborative Note-Taking App
+# 📝 Collaborative Note-Taking App
 
-A full-stack collaborative note-taking web app built with the **MERN stack** (MongoDB, Express, React, Node.js) and styled with **Tailwind CSS**. Features JWT authentication, a rich text editor, full-text search, and real-time collaborator management.
-
----
-
-## Features
-
-- **JWT Authentication** — Register & login with hashed passwords (bcrypt) and token-based sessions
-- **Rich Text Editor** — React Quill integration for formatting notes
-- **Full-Text Search** — MongoDB text index on title and content for instant search
-- **Collaborator Management** — Invite users by email; collaborators can view and edit shared notes
-- **Owner Permissions** — Only the note owner can delete notes or manage collaborators
-- **iOS-Inspired UI** — Clean, minimal design with Tailwind CSS (frosted glass headers, rounded cards, soft shadows)
+A full-stack **MERN** (MongoDB, Express, React, Node.js) note-taking web app I built for my university project. It lets you create and edit rich-text notes, search through them instantly, and share notes with other users as collaborators. The frontend is styled with **Tailwind CSS** and bundled with **Vite** for a fast dev experience.
 
 ---
 
-## Tech Stack
+## ✨ Features
 
-| Layer    | Technology                                                  |
-| -------- | ----------------------------------------------------------- |
-| Frontend | React 19, React Router, Axios, React Quill, Tailwind CSS v4 |
-| Backend  | Node.js, Express 5, Mongoose, JWT, bcrypt                   |
-| Database | MongoDB (Atlas or local)                                    |
+- **JWT Authentication** – sign up and log in with hashed passwords (bcrypt) and Bearer token sessions
+- **Rich Text Editor** – write formatted notes using React Quill (bold, headings, lists, code blocks, etc.)
+- **Full-Text Search** – MongoDB text index on title + content so you can find notes instantly
+- **Collaborator Management** – invite other users by email; collaborators can view and edit shared notes
+- **Owner-Only Permissions** – only the note owner can delete notes or add/remove collaborators
+- **Clean iOS-Inspired UI** – minimal design using Tailwind (frosted glass headers, rounded cards, soft shadows)
 
 ---
 
-## Project Structure
+## 🛠️ Tech Stack
+
+| Layer    | Technologies                                                    |
+| -------- | --------------------------------------------------------------- |
+| Frontend | React 19, Vite 7, React Router, Axios, React Quill, Tailwind v4 |
+| Backend  | Node.js, Express 5, Mongoose, JSON Web Tokens, bcrypt           |
+| Database | MongoDB (Atlas or local)                                        |
+
+---
+
+## 📁 Project Structure
 
 ```
 Note-Taking-App-/
 ├── backend/
 │   ├── middleware/
-│   │   └── authMiddleware.js      # JWT verification middleware
+│   │   └── authMiddleware.js       # checks the JWT token on protected routes
 │   ├── models/
-│   │   ├── Note.js                # Note schema (text index on title & content)
-│   │   └── User.js                # User schema
+│   │   ├── Note.js                 # note schema + text index for search
+│   │   └── User.js                 # user schema (name, email, password)
 │   ├── routes/
-│   │   ├── authRoutes.js          # POST /register, /login
-│   │   ├── noteRoutes.js          # CRUD + search + collaborator routes
-│   │   └── userRoutes.js          # GET /users?email=...
-│   ├── server.js                  # Express app entry point
-│   ├── .env                       # Environment variables (do NOT commit)
+│   │   ├── authRoutes.js           # register & login endpoints
+│   │   ├── noteRoutes.js           # CRUD, search, and collaborator routes
+│   │   └── userRoutes.js           # look up users by email
+│   ├── server.js                   # main entry point – sets up express & mongo
+│   ├── .env                        # env variables (don't commit this!)
 │   └── package.json
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   └── CollaboratorModal.jsx
+│   │   │   └── CollaboratorModal.jsx   # bottom sheet to manage collaborators
 │   │   ├── context/
-│   │   │   └── AuthContext.jsx     # Global auth state & hooks
+│   │   │   └── AuthContext.jsx         # global auth state (login, logout, etc.)
 │   │   ├── pages/
-│   │   │   ├── Dashboard.jsx       # Note grid + search
-│   │   │   ├── Login.jsx
-│   │   │   ├── NoteEditor.jsx      # Rich text editor page
-│   │   │   └── Register.jsx
+│   │   │   ├── Dashboard.jsx           # main note grid with search bar
+│   │   │   ├── Login.jsx               # login page
+│   │   │   ├── NoteEditor.jsx          # rich text editor page
+│   │   │   └── Register.jsx            # registration page
 │   │   ├── utils/
-│   │   │   └── api.js              # Axios instance with JWT interceptor
-│   │   ├── App.jsx                 # Routes & auth guards
-│   │   ├── main.jsx                # React entry point
-│   │   └── index.css               # Tailwind import + Quill overrides
+│   │   │   └── api.js                  # axios instance with token interceptor
+│   │   ├── App.jsx                     # routes & auth guards
+│   │   ├── main.jsx                    # react entry point
+│   │   └── index.css                   # tailwind imports + quill style tweaks
 │   ├── index.html
 │   ├── vite.config.js
 │   └── package.json
@@ -66,16 +66,16 @@ Note-Taking-App-/
 
 ---
 
-## Prerequisites
+## 📋 Prerequisites
 
-- **Node.js** v18 or later
-- **MongoDB** — either a local instance or a [MongoDB Atlas](https://www.mongodb.com/atlas) cluster
+- **Node.js** v18+
+- **MongoDB** – either a local instance or a free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster
 
 ---
 
-## Environment Variables
+## ⚙️ Environment Variables
 
-Create a `backend/.env` file with the following:
+Create a file called `backend/.env` and add the following:
 
 ```env
 PORT=5000
@@ -83,19 +83,19 @@ MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?ret
 JWT_SECRET=replace_with_a_long_random_secret
 ```
 
-| Variable     | Description                               |
+| Variable     | What it does                              |
 | ------------ | ----------------------------------------- |
-| `PORT`       | Port the Express server listens on        |
-| `MONGO_URI`  | MongoDB connection string                 |
-| `JWT_SECRET` | Secret key used to sign/verify JWT tokens |
+| `PORT`       | Port the backend server runs on           |
+| `MONGO_URI`  | Your MongoDB connection string            |
+| `JWT_SECRET` | Secret key for signing & verifying tokens |
 
-> **Do not commit real credentials.** The `.gitignore` already excludes `.env` files.
+> ⚠️ **Don't commit real credentials.** The `.gitignore` already excludes `.env` files.
 
 ---
 
-## Getting Started
+## 🚀 Local Setup Instructions
 
-### 1. Clone the repository
+### 1. Clone the repo
 
 ```bash
 git clone https://github.com/<your-username>/Note-Taking-App-.git
@@ -105,60 +105,68 @@ cd Note-Taking-App-
 ### 2. Install dependencies
 
 ```bash
-# Backend
+# install backend packages
 cd backend
 npm install
 
-# Frontend
+# install frontend packages
 cd ../frontend
 npm install
 ```
 
-### 3. Configure environment
+### 3. Set up your environment
 
-Copy the template above into `backend/.env` and fill in your MongoDB URI and a secure JWT secret.
+Copy the template above into `backend/.env` and fill in your own MongoDB URI and a strong JWT secret.
 
-### 4. Start the development servers
+### 4. Start both servers
+
+Open **two terminals**:
 
 ```bash
-# Terminal 1 — Backend (port 5000)
+# Terminal 1 – start the backend (runs on port 5000)
 cd backend
 npm run dev
 
-# Terminal 2 — Frontend (port 5173)
+# Terminal 2 – start the frontend (runs on port 5173)
 cd frontend
 npm run dev
 ```
 
-Open **http://localhost:5173** in your browser.
+Then open **http://localhost:5173** in your browser and you're good to go!
 
 ---
 
-## API Endpoints
+## 📡 API Endpoints
 
-### Auth (`/api/auth`)
+### Auth – `/api/auth`
 
-| Method | Endpoint    | Body                        | Description       |
-| ------ | ----------- | --------------------------- | ----------------- |
-| POST   | `/register` | `{ name, email, password }` | Create a new user |
-| POST   | `/login`    | `{ email, password }`       | Get a JWT token   |
+| Method | Route       | Body                        | What it does         |
+| ------ | ----------- | --------------------------- | -------------------- |
+| POST   | `/register` | `{ name, email, password }` | registers a new user |
+| POST   | `/login`    | `{ email, password }`       | returns a JWT token  |
 
-### Notes (`/api/notes`) — all require `Authorization: Bearer <token>`
+### Notes – `/api/notes` _(all routes need `Authorization: Bearer <token>`)_
 
-| Method | Endpoint             | Description                                 |
-| ------ | -------------------- | ------------------------------------------- |
-| GET    | `/`                  | List notes you own or collaborate on        |
-| GET    | `/search?q=text`     | Full-text search on accessible notes        |
-| GET    | `/:id`               | Get a single note (owner/collaborator only) |
-| POST   | `/`                  | Create a new note                           |
-| PUT    | `/:id`               | Update title/content (owner/collaborator)   |
-| DELETE | `/:id`               | Delete a note (owner only)                  |
-| PUT    | `/:id/collaborators` | Add collaborator by email (owner only)      |
-| PATCH  | `/:id/collaborators` | Add collaborator by userId (owner only)     |
-| DELETE | `/:id/collaborators` | Remove collaborator by userId (owner only)  |
+| Method | Route                | What it does                                   |
+| ------ | -------------------- | ---------------------------------------------- |
+| GET    | `/`                  | list all notes you own or collaborate on       |
+| GET    | `/search?q=text`     | full-text search across your accessible notes  |
+| GET    | `/:id`               | get a single note (must be owner/collaborator) |
+| POST   | `/`                  | create a new note                              |
+| PUT    | `/:id`               | update title or content                        |
+| DELETE | `/:id`               | delete a note (owner only)                     |
+| PUT    | `/:id/collaborators` | add a collaborator by email (owner only)       |
+| PATCH  | `/:id/collaborators` | add a collaborator by userId (owner only)      |
+| DELETE | `/:id/collaborators` | remove a collaborator (owner only)             |
 
-### Users (`/api/users`) — requires `Authorization: Bearer <token>`
+### Users – `/api/users` _(needs `Authorization: Bearer <token>`)_
 
-| Method | Endpoint      | Description             |
+| Method | Route         | What it does            |
 | ------ | ------------- | ----------------------- |
-| GET    | `/?email=...` | Look up a user by email |
+| GET    | `/?email=...` | look up a user by email |
+
+---
+
+## 📄 License
+
+This project was built for educational purposes as part of a university assignment.

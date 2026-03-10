@@ -9,16 +9,16 @@ const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-// Middleware
+// middleware setup – allowing frontend on port 5173 to make requests
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 
-// Routes
+// hooking up all the route files
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/users", userRoutes);
 
-// Connect to MongoDB and start server
+// connect to mongodb then start listening
 const PORT = process.env.PORT || 5000;
 
 mongoose

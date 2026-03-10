@@ -34,7 +34,7 @@ export default function CollaboratorModal({ noteId, collaborators, onClose, onUp
       });
       onUpdate(data);
     } catch {
-      /* silently fail */
+      // not much to do if remove fails
     }
   };
 
@@ -43,17 +43,17 @@ export default function CollaboratorModal({ noteId, collaborators, onClose, onUp
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/20 backdrop-blur-sm"
       onClick={onClose}
     >
-      {/* Modal card */}
+      {/* the actual modal card */}
       <div
         className="bg-white rounded-3xl w-full max-w-md mx-4 mb-4 sm:mb-0 shadow-xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Drag indicator */}
+        {/* little drag handle at the top (ios style) */}
         <div className="flex justify-center pt-3 pb-1">
           <div className="w-9 h-1 rounded-full bg-gray-300" />
         </div>
 
-        {/* Header */}
+        {/* modal header */}
         <div className="px-6 pt-2 pb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">Collaborators</h2>
           <button
@@ -64,7 +64,7 @@ export default function CollaboratorModal({ noteId, collaborators, onClose, onUp
           </button>
         </div>
 
-        {/* Add form */}
+        {/* form to add a new collaborator by email */}
         <form onSubmit={handleAdd} className="px-6 pb-4">
           <div className="flex gap-2">
             <input
@@ -90,7 +90,7 @@ export default function CollaboratorModal({ noteId, collaborators, onClose, onUp
           )}
         </form>
 
-        {/* Collaborator list */}
+        {/* list of current collaborators */}
         <div className="max-h-64 overflow-y-auto">
           {collaborators.length === 0 ? (
             <p className="text-sm text-gray-400 text-center py-6">
@@ -125,7 +125,7 @@ export default function CollaboratorModal({ noteId, collaborators, onClose, onUp
           )}
         </div>
 
-        {/* Bottom safe area */}
+        {/* bit of extra space at the bottom */}
         <div className="h-2" />
       </div>
     </div>

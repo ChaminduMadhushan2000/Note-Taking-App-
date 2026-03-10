@@ -37,7 +37,7 @@ export default function Register() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        {/* Header */}
+        {/* page title */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
             Create Account
@@ -47,7 +47,7 @@ export default function Register() {
           </p>
         </div>
 
-        {/* Card */}
+        {/* registration form card */}
         <div className="bg-white rounded-3xl shadow-sm p-8">
           {error && (
             <div className="mb-4 text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3 text-center">
@@ -112,7 +112,7 @@ export default function Register() {
           </form>
         </div>
 
-        {/* Footer */}
+        {/* link to login page */}
         <p className="text-center text-sm text-gray-500 mt-6">
           Already have an account?{" "}
           <Link to="/login" className="text-blue-500 font-medium hover:text-blue-600">
